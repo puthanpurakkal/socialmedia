@@ -1,14 +1,61 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Title</title>
-<!-- CSS only -->
-<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-0evHe/X+R7YkIZDRvuzKMRqM+OrBnVFBL6DOitfPri4tjfHxaWutUpFmBp4vmVor" crossorigin="anonymous">
-</head>
-<body>
-<h1>WELCOME USER {{request.user}}</h1>
-</body>
-<!-- JavaScript Bundle with Popper -->
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/js/bootstrap.bundle.min.js" integrity="sha384-pprn3073KE6tl6bjs2QrFaJGz5/SUsLqktiwsUTF55Jfv3qYSDhgCecCxMW52nD2" crossorigin="anonymous"></script>
-</html>
+{%extends 'base.html'%}
+{%block body_block%}
+
+<div class="row mt-lg-5">
+
+    <div class="col-4"></div>
+    <div class="col-4">
+
+        <h1>WELCOME USER {{request.user}}</h1>
+
+    </div>
+    <div class="col-4"></div>
+</div>
+<div class="row">
+    <div class="col-4"></div>
+    <div class="col-4">
+        <form action="" method="post" enctype="multipart/form-data">
+            {%csrf_token%}
+            {{form.as_p}}
+            <input type="submit" value="post">
+        </form>
+    </div>
+    <div class="col-4"></div>
+</div>
+{%for blog in blogs%}
+<div class="row">
+    <div class="col-4"></div>
+    <div class="col-4">
+        <p>{{blog.title}}</p>
+        {%if blog.image%}
+        <img src="{{blog.image.url}}" class="img-fluid" alt="...">
+        <p>posted_by {{blog.author}}</p>
+        <p>created_at {{blog.posted_date}}</p>
+
+        <div class="row">
+            <div class="col-4"></div>
+            <div class="col-4">
+
+                <form action="{%url 'add-comment' blog.id%}" method="post">
+
+                    {%csrf_token%}
+                    {{comment_form.as_p}}
+                    <input type="submit" class="btn btn-info" value="add">
+
+                    <div>
+                        <a href="{%url 'add-like' blog.id%}"><i class="fas fa-thumbs-up me-3"></i> </a>
+                        <p class="m-0">like</p>
+                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                    </div>
+
+                </form>
+
+                {%endif%}
+
+            </div>
+            <div class="col-4"></div>
+        </div>
+        </div>
+        {%endfor%}
+        {%endblock%}
+    </div>
